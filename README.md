@@ -4,8 +4,8 @@ Repositório criado para o desenvolvimento de um jogo implementado na linguagem 
 # 👥 Grupo
 Brandon de Oliveira Hunt (@brandonhunt00)
 
-Gabriel Correia Pontes 
+Gabriel Correia Pontes (@gabrielcorreiapontes)
 
-Luiz Flavius Veras
+Luiz Flavius Veras (@Luiiizks)
 
-Mariana Medeiros de Barros Correia 
+Mariana Medeiros de Barros Correia (@marimmbc) 
