@@ -7,38 +7,38 @@ int x = 34, y = 12;
 int incX = 1, incY = 1;
 int bolaX = 10, bolaY = 5;
 int direcaoX = 1, direcaoY = 1;
-int paddleX = 40;  // Posição inicial da raquete no eixo X
-int paddleY = 20;  // Posição inicial no eixo Y
-int paddleWidth = 6;  // Largura da raquete
+int paddleX = 40; 
+int paddleY = 20; 
+int paddleWidth = 6;  
 int pontuacao = 0;
 
 void printPontuacao() {
     screenSetColor(WHITE, DARKGRAY);
-    screenGotoxy(0, 0);  // Exibe a pontuação no canto superior esquerdo
+    screenGotoxy(0, 0);  
     printf("Pontuação: %d", pontuacao);
 }
 
 void printPaddle(int nextPaddleX) {
     screenSetColor(GREEN, DARKGRAY);
     screenGotoxy(paddleX, paddleY);
-    printf("      ");  // Apaga a raquete anterior (espaços vazios do tamanho da raquete)
+    printf("      ");  
 
     paddleX = nextPaddleX;
 
     screenGotoxy(paddleX, paddleY);
-    printf("======");  // Desenha a raquete na nova posição
+    printf("======"); 
 }
 
 void printBall(int nextBolaX, int nextBolaY) {
     screenSetColor(WHITE, DARKGRAY);
     screenGotoxy(bolaX, bolaY);
-    printf(" ");  // Apaga a bola anterior
+    printf(" ");  
 
     bolaX = nextBolaX;
     bolaY = nextBolaY;
 
     screenGotoxy(bolaX, bolaY);
-    printf("O");  // Imprime a bola na nova posição
+    printf("O"); 
 }
 
 void printHello(int nextX, int nextY) {
@@ -78,51 +78,45 @@ int main() {
     timerInit(50);
 
     printHello(x, y);
-    printPaddle(paddleX);  // Imprime a raquete no início do jogo
+    printPaddle(paddleX); 
     screenUpdate();
 
     while (ch != 10) {
-        // Handle user input
         if (keyhit()) {
             ch = readch();
             printKey(ch);
             
-            // Controle da raquete
-            if (ch == 'a' && paddleX > MINX+1)  // Move para a esquerda
+            if (ch == 'a' && paddleX > MINX+1) 
             {
-                printPaddle(paddleX - 2);  // Mova a raquete 2 espaços à esquerda
+                printPaddle(paddleX - 2);  
             }
-            else if (ch == 'd' && paddleX < MAXX - paddleWidth - 1)  // Move para a direita
+            else if (ch == 'd' && paddleX < MAXX - paddleWidth - 1) 
             {
-                printPaddle(paddleX + 2);  // Mova a raquete 2 espaços à direita
+                printPaddle(paddleX + 2); 
             }
 
             screenUpdate();
         }
 
-        // Update game state (move elements, verify collision, etc)
         if (timerTimeOver() == 1) {
-            // Movimento da bola
             int novaBolaX = bolaX + direcaoX;
             if (novaBolaX >= MAXX-1 || novaBolaX <= MINX+1) direcaoX = -direcaoX;
 
             int novaBolaY = bolaY + direcaoY;
             
-            // Verifica se a bola atingiu a raquete
             if (novaBolaY == paddleY && novaBolaX >= paddleX && novaBolaX <= (paddleX + paddleWidth))
             {
-                direcaoY = -direcaoY;  // A bola quica na raquete
-                pontuacao++;  // Incrementa a pontuação
-                printPontuacao();  // Atualiza a pontuação na tela
+                direcaoY = -direcaoY; 
+                pontuacao++; 
+                printPontuacao();  
             }
             else if (novaBolaY >= MAXY-1 || novaBolaY <= MINY+1)
             {
-                direcaoY = -direcaoY;  // A bola quica nas bordas superior/inferior
+                direcaoY = -direcaoY;  
             }
 
-            printBall(novaBolaX, novaBolaY);  // Atualiza a posição da bola
+            printBall(novaBolaX, novaBolaY);  
 
-            // Movimento da string "Hello World"
             int novaPosX = x + incX;
             if (novaPosX >= (MAXX - strlen("Hello World") - 1) || novaPosX <= MINX + 1) incX = -incX;
 
@@ -130,7 +124,7 @@ int main() {
             if (novaPosY >= MAXY - 1 || novaPosY <= 1) incY = -incY;
 
             printHello(novaPosX, novaPosY);
-            printPaddle(paddleX);  // Sempre imprime a raquete a cada atualização
+            printPaddle(paddleX);  
             screenUpdate();
         }
     }
