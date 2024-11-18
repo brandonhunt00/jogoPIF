@@ -13,6 +13,7 @@
 #define LARGURA_DO_PORTAL      2
 #define VELOCIDADE_DO_PORTAL   1
 #define CORRECAO_RAQUETE       (ALTURA_DAS_RAQUETES * 2 / 5)
+#define PAREDE_ESQUERDA_X      0  // Definição da posição da parede esquerda
 
 typedef struct {
     int x, y;
@@ -28,6 +29,7 @@ typedef struct {
     int dx;
 } Portal;
 
+// Funções de desenho e limpeza
 void printPontuacao(int pontuacao1, int pontuacao2);
 void printRaquete(Raquete *raquete);
 void clearRaquete(Raquete *raquete);
@@ -36,6 +38,7 @@ void clearBola(Bola *bola);
 void moverBola(Bola *bolas, int *numero_de_bolas, Raquete *raquete1, Raquete *raquete2, Portal *portal_cima, Portal *portal_baixo, int *pontuacao1, int *pontuacao2);
 void moverPortais(Portal *portal);
 void printPortais(Portal *portal_cima, Portal *portal_baixo);
+void desenharParedeEsquerda(); // Nova função para desenhar a parede esquerda
 
 void printPontuacao(int pontuacao1, int pontuacao2) {
     screenSetColor(WHITE, DARKGRAY);
@@ -53,8 +56,11 @@ void printRaquete(Raquete *raquete) {
 
 void clearRaquete(Raquete *raquete) {
     for (int i = 0; i < ALTURA_DAS_RAQUETES; i++) {
-        screenGotoxy(raquete->x, raquete->y + i);
-        printf(" ");
+        // Verifica se a posição não é a parede esquerda
+        if (raquete->x != PAREDE_ESQUERDA_X) {
+            screenGotoxy(raquete->x, raquete->y + i);
+            printf(" ");
+        }
     }
 }
 
@@ -65,8 +71,11 @@ void printBola(Bola *bola) {
 }
 
 void clearBola(Bola *bola) {
-    screenGotoxy(bola->x, bola->y);
-    printf(" ");
+    // Verifica se a posição não é a parede esquerda
+    if (bola->x != PAREDE_ESQUERDA_X) {
+        screenGotoxy(bola->x, bola->y);
+        printf(" ");
+    }
 }
 
 void moverBola(Bola *bolas, int *numero_de_bolas, Raquete *raquete1, Raquete *raquete2, Portal *portal_cima, Portal *portal_baixo, int *pontuacao1, int *pontuacao2) {
@@ -155,6 +164,15 @@ void printPortais(Portal *portal_cima, Portal *portal_baixo) {
     }
 }
 
+// Nova função para desenhar a parede esquerda
+void desenharParedeEsquerda() {
+    screenSetColor(WHITE, DARKGRAY);
+    for(int y = 0; y < SCRENDY; y++) {
+        screenGotoxy(PAREDE_ESQUERDA_X, y);
+        printf("|");
+    }
+}
+
 int main() {
     int ch = 0;
     int pontuacao1 = 0, pontuacao2 = 0;
@@ -185,6 +203,9 @@ int main() {
     screenInit(1);
     keyboardInit();
     timerInit(VELOCIDADE_DA_BOLA);
+
+    // Desenha a parede esquerda inicialmente
+    desenharParedeEsquerda();
 
     printPontuacao(pontuacao1, pontuacao2);
     printRaquete(raquete1);
@@ -231,7 +252,7 @@ int main() {
         if (!pausa && timerTimeOver() == 1) {
             // Limpa a mensagem de pausa ao retomar o jogo
             screenGotoxy(SCRENDX / 2 - 5, SCRENDY / 2);
-            printf("             "); // Limpa a mensagem de pausa
+            printf("              "); // 14 espaços para limpar "  Jogo pausado"
 
             moverPortais(&portal_cima);
             moverPortais(&portal_baixo);
@@ -241,6 +262,9 @@ int main() {
             printPontuacao(pontuacao1, pontuacao2);
             printRaquete(raquete1);
             printRaquete(raquete2);
+
+            // Redesenha a parede esquerda
+            desenharParedeEsquerda();
 
             if (pontuacao1 >= LIMITE_DE_PONTUACAO || pontuacao2 >= LIMITE_DE_PONTUACAO) {
                 screenGotoxy(SCRENDX / 3 - 10, SCRENDY / 2);
