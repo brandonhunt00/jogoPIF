@@ -17,7 +17,7 @@ Para configurar o ambiente para a execução do nosso projeto, é necessário da
 Navege até o diretório onde está localizado o projeto do jogo.
 
 ## Passo 3:
-Execute o comando gcc ./src/*.c -I ./include/ -o pong e o arquivo executável será gerado
+Execute o comando make e o arquivo executável será gerado
 Execute ./pong
 
 ## Exemplo durante a execução:
