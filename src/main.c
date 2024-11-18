@@ -37,7 +37,6 @@ void moverBola(Bola *bolas, int *numero_de_bolas, Raquete *raquete1, Raquete *ra
 void moverPortais(Portal *portal);
 void printPortais(Portal *portal_cima, Portal *portal_baixo);
 
-
 void printPontuacao(int pontuacao1, int pontuacao2) {
     screenSetColor(WHITE, DARKGRAY);
     screenGotoxy(0, 0);
@@ -72,14 +71,26 @@ void clearBola(Bola *bola) {
 
 void moverBola(Bola *bolas, int *numero_de_bolas, Raquete *raquete1, Raquete *raquete2, Portal *portal_cima, Portal *portal_baixo, int *pontuacao1, int *pontuacao2) {
     for (int i = 0; i < *numero_de_bolas; i++) {
+        // Garante que a bola esteja dentro dos limites antes de limpar
+        if (bolas[i].y <= 1) {
+            bolas[i].y = 2;
+        } else if (bolas[i].y >= SCRENDY - 1) {
+            bolas[i].y = SCRENDY - 2;
+        }
+
         clearBola(&bolas[i]);
 
         int novaBolaX = bolas[i].x + bolas[i].dx;
         int novaBolaY = bolas[i].y + bolas[i].dy;
 
         // Colisão com as bordas superior e inferior
-        if (novaBolaY <= 1 || novaBolaY >= SCRENDY - 1)
+        if (novaBolaY <= 1 || novaBolaY >= SCRENDY - 1) {
             bolas[i].dy = -bolas[i].dy;
+            if (novaBolaY <= 1)
+                novaBolaY = 2;
+            else
+                novaBolaY = SCRENDY - 2;
+        }
 
         // Colisão com as raquetes
         if ((novaBolaX == raquete1->x + 1 && novaBolaY >= raquete1->y && novaBolaY < raquete1->y + ALTURA_DAS_RAQUETES) ||
@@ -218,6 +229,10 @@ int main() {
         }
 
         if (!pausa && timerTimeOver() == 1) {
+            // Limpa a mensagem de pausa ao retomar o jogo
+            screenGotoxy(SCRENDX / 2 - 5, SCRENDY / 2);
+            printf("             "); // Limpa a mensagem de pausa
+
             moverPortais(&portal_cima);
             moverPortais(&portal_baixo);
             printPortais(&portal_cima, &portal_baixo);
