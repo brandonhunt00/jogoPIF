@@ -43,7 +43,7 @@ void desenharParedeEsquerda(); // Nova função para desenhar a parede esquerda
 void printPontuacao(int pontuacao1, int pontuacao2) {
     screenSetColor(WHITE, DARKGRAY);
     screenGotoxy(0, 0);
-    printf("Jogador 1: %d | Jogador 2: %d", pontuacao1, pontuacao2);
+    printf("  Jogador 1: %d | Jogador 2: %d", pontuacao1, pontuacao2);
 }
 
 void printRaquete(Raquete *raquete) {
