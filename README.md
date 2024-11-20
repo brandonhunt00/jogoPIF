@@ -11,7 +11,7 @@ Os jogadores competem para marcar pontos ao fazerem a bola passar inatingida pel
 # Execução do Jogo:
 
 ## Passo 1:
-Para configurar o ambiente para a execução do nosso projeto, é necessário dar um git pull nesse repositório.
+Para configurar o ambiente para a execução do nosso projeto, é necessário dar um git clone nesse repositório.
 
 ## Passo 2:
 Navege até o diretório onde está localizado o projeto do jogo.
